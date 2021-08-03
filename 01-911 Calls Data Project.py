@@ -30,6 +30,8 @@ df.info() #Taking a peek at what is inside the data
 
 df.head()
 
+df['title'].nunique() #Looking at how many cases are in the dataset.
+
 
 df['zip'].value_counts().head(5) #Looking at top 5 unique zipcodes for 911 calls
 
@@ -37,52 +39,22 @@ df['zip'].value_counts().head(5) #Looking at top 5 unique zipcodes for 911 calls
 df['twp'].value_counts().head(5) #Looking at top 5 unique townships for 911 calls.
 
 
-# In[135]:
+# Creating new features
 
-
-
-
-
-# ** Take a look at the 'title' column, how many unique title codes are there? **
-
-# In[30]:
-
-
-df['title'].nunique()
-
-
-# In[136]:
-
-
-
-
-
-# ## Creating new features
-
-# ** In the titles column there are "Reasons/Departments" specified before the title code. These are EMS, Fire, and Traffic. Use .apply() with a custom lambda expression to create a new column called "Reason" that contains this string value.** 
-# 
-# **For example, if the title column value is EMS: BACK PAINS/INJURY , the Reason column value would be EMS. **
-
-# In[217]:
+# In the titles column there are "Reasons/Departments" specified before the title code. These are EMS, Fire, and Traffic. Use .apply() with a custom lambda expression to create a new column called "Reason" that contains this string value. 
+# For example, if the title column value is EMS: BACK PAINS/INJURY , the Reason column value would be EMS. **
 
 
 df['Reason'] = df['title'].apply(lambda title: title.split(':')[0])
 
-
-# ** What is the most common Reason for a 911 call based off of this new column? **
-
-# In[218]:
-
+#Fiding most common Reason for a 911 call based off of this new column above.
 
 df['title'].apply(lambda title: title.split()[0]).value_counts()
 
 
-# ** Now use seaborn to create a countplot of 911 calls by Reason. **
+#Now use seaborn to create a countplot of 911 calls by Reason.
 
-# In[219]:
-
-
-sns.set_style('whitegrid')
+sns.set_style('whitegrid') #clear the plot first
 sns.countplot(x=df['Reason'], palette = 'viridis')
 
 
