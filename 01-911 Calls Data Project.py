@@ -91,56 +91,34 @@ sns.countplot(x=df['Month'], hue=df['Reason'], palette='viridis')
 # The current data is missing some months in the month column.
 # We can fill in this information by plotting the information in Pandas. (simple line plot that fills in the missing info)
 # First, create a gropuby object by the month column.
-# Then, use the count() method for aggregation.
+# Then, use the count() method for aggregation and plot it.
 df.groupby(df['Month']).count()
 byMonth = df.groupby(df['Month']).count()
 byMonth['twp'].plot()  # See if this fills in the missing info. Works fine!
 
-# ** Now see if you can use seaborn's lmplot() to create a linear fit on the number of calls per month. Keep in mind you may need to reset the index to a column. **
-
-# In[228]:
-
-
+# Another method for filling the missing info: Using seaborn's lmplot() to create a linear fit on the number of calls per month after resetting the index made of months to a column
 sns.lmplot(x='Month', y='twp', data=byMonth.reset_index())
 
 
-# ######
-
-# **Create a new column called 'Date' that contains the date from the timeStamp column. You'll need to use apply along with the .date() method. **
-
-# In[229]:
-
-
+# Analyzing the reasons for calling 911 on a daily basis through the means of plotting
+# Creating a new column called 'Date' that contains the date from the timeStamp column.
 df['Date'] = converted.apply(lambda x: x.date())
 
 
-# ** Now groupby this Date column with the count() aggregate and create a plot of counts of 911 calls.**
-
-# In[230]:
-
+# Using groupby for Date with count() aggregate and creating a plot of counts of 911 calls
 
 byDate = df.groupby(by='Date').count()
 byDate['lat'].plot()
-plt.tight_layout()
+plt.tight_layout()  # For more accurate display
 
 
-# ** Now recreate this plot but create 3 separate plots with each plot representing a Reason for the 911 call**
-
-# In[260]:
-
-
+# Re-creating the previous plot as 3 separate plots with each plot representing each reason for the 911 call
+# Reasons are: Traffic, EMS, Fire
 byTraffic = df[df['Reason'] == 'Traffic']
 byTraffic_and_Date = byTraffic.groupby(by='Date').count()
 byTraffic_and_Date['lat'].plot()
 plt.tight_layout()
 plt.title('Traffic')
-
-
-# In[199]:
-
-
-# In[259]:
-
 
 byFire = df[df['Reason'] == 'Fire']
 byFire_and_date = byFire.groupby(by='Date').count()
