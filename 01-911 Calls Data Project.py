@@ -84,39 +84,17 @@ df['Day'] = df['Day'].map(dmap)
 sns.countplot(x=df['Day'], hue=df['Reason'], palette='viridis')
 
 
-# Same Procedure for Month:**
-
+# Same Procedure for Month
 sns.countplot(x=df['Month'], hue=df['Reason'], palette='viridis')
 
 
-# In[3]:
-
-
-# **Did you notice something strange about the Plot?**
-#
-# _____
-#
-# ** You should have noticed it was missing some Months, let's see if we can maybe fill in this information by plotting the information in another way, possibly a simple line plot that fills in the missing months, in order to do this, we'll need to do some work with pandas... **
-
-# ** Now create a gropuby object called byMonth, where you group the DataFrame by the month column and use the count() method for aggregation. Use the head() method on this returned DataFrame. **
-
-# In[226]:
-
-
-df.groupby(df['Month']).count().head()
+# The current data is missing some months in the month column.
+# We can fill in this information by plotting the information in Pandas. (simple line plot that fills in the missing info)
+# First, create a gropuby object by the month column.
+# Then, use the count() method for aggregation.
+df.groupby(df['Month']).count()
 byMonth = df.groupby(df['Month']).count()
-
-
-# In[169]:
-
-
-# ** Now create a simple plot off of the dataframe indicating the count of calls per month. **
-
-# In[227]:
-
-
-byMonth['twp'].plot()
-
+byMonth['twp'].plot()  # See if this fills in the missing info. Works fine!
 
 # ** Now see if you can use seaborn's lmplot() to create a linear fit on the number of calls per month. Keep in mind you may need to reset the index to a column. **
 
