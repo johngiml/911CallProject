@@ -59,7 +59,7 @@ sns.set_style('whitegrid')  # clear the plot first
 sns.countplot(x=df['Reason'], palette='viridis')
 
 
-# analysis on time information
+# Analysis on time information
 
 type(df['timeStamp'][0])  # Checking out the current type of timestamp
 
@@ -100,6 +100,8 @@ byMonth['twp'].plot()  # See if this fills in the missing info. Works fine!
 sns.lmplot(x='Month', y='twp', data=byMonth.reset_index())
 
 
+# <Analysis of reasons for calling 911>
+
 # Analyzing the reasons for calling 911 on a daily basis through the means of plotting
 # Creating a new column called 'Date' that contains the date from the timeStamp column.
 df['Date'] = converted.apply(lambda x: x.date())
@@ -127,96 +129,33 @@ plt.tight_layout()
 plt.title('Fire')
 
 
-# In[201]:
-
-
-# In[252]:
-
-
 byEMS = df[df['Reason'] == 'EMS']
 byEMS_and_Date = byEMS.groupby(by='Date').count()['lat'].plot()
 plt.title('EMS')
 plt.tight_layout()
 
 
-# In[202]:
-
-
-# In[261]:
-
-
-df
-
-
-# ____
-# ** Now let's move on to creating  heatmaps with seaborn and our data. We'll first need to restructure the dataframe so that the columns become the Hours and the Index becomes the Day of the Week. There are lots of ways to do this, but I would recommend trying to combine groupby with an [unstack](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.unstack.html) method. Reference the solutions if you get stuck on this!**
-
-# In[290]:
-
+# Creating a heatmap for the reason column
+# Creating a matrix for our heatmap on the scope of day and hour
 
 matrix1 = df.groupby(by=['Day', 'Hour']).count()['Reason'].unstack(level=-1)
-matrix1.head()
+matrix1.head()  # Just for checking purpose.
+sns.heatmap(matrix1, cmap='viridis')  # Heatmap created
 
-
-# In[297]:
-
-
-sns.heatmap(matrix1, cmap='viridis')
-
-
-# ** Now create a HeatMap using this new DataFrame. **
-
-# In[303]:
-
-
+# Changing the size of our heatmap for better display purpose
 fig, ax = plt.subplots(figsize=(12, 7))
 sns.heatmap(matrix1, cmap='viridis')
 
-
-# In[204]:
-
-
-# ** Now create a clustermap using this DataFrame. **
-
-# In[314]:
-
-
+# Creating a clutermap for further data analysis
 sns.clustermap(matrix1, cmap='viridis', figsize=(8.5, 8.5))
 
 
-# In[205]:
-
-
-# ** Now repeat these same plots and operations, for a DataFrame that shows the Month as the column. **
-
-# In[319]:
-
+# Repeating the above process with months instead of hours.
 
 matrix2 = df.groupby(by=['Day', 'Month']).count()['Reason'].unstack(level=-1)
 matrix2.head()
-
-
-# In[207]:
-
-
-# In[325]:
-
-
 fig, ax = plt.subplots(figsize=(12, 7))
 sns.heatmap(data=matrix2, cmap='viridis')
-
-
-# In[208]:
-
-
-# In[328]:
-
-
 sns.clustermap(data=matrix2, figsize=(8, 7), cmap='viridis')
 
-
-# In[209]:
-
-
-# **Continue exploring the Data however you see fit!**
-# # Great Job!
+# end of project
